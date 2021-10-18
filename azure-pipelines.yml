@@ -15,7 +15,6 @@ steps:
 - task: UseDotNet@2
   displayName: 'Use .NET SDK $(dotnetSdkVersion)'
   inputs:
-    packageType: sdk
     version: '$(dotnetSdkVersion)'
 
 - task: Npm@1
@@ -39,17 +38,14 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
-#1 Build and Publish
-- template: templates/build.yaml
+- template: templates/build.yml
   parameters:
     buildConfiguration: 'Debug'
 
-- template: templates/build.yaml
+- template: templates/build.yml
   parameters:
     buildConfiguration: 'Release'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifcacts: drop'
-  # condition to run only after previous task complets
-  # its the default so not required to be used
+  displayName: 'Publish Artifact: drop'
   condition: succeeded()
